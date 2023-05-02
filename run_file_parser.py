@@ -87,6 +87,12 @@ class RunFile:
             else:
                 self.set_frames_done(run_n, 0)
 
+    def select_list(self, in_list):
+        for run_n in range(1, self._run_number + 1):
+            self.set_frames_done(run_n, 0)
+        for run_n in in_list:
+            self.set_frames_done(run_n, self.get_frames_in_run(run_n))
+
     def print(self):
         s = ''
         width = 8
