@@ -59,10 +59,10 @@ class RunFile:
 
     def set_frames_done(self, run_n, frames):
         if run_n > self._run_number:
-            print('Wrong run_n in set_frames_done')
+            print(make_color('Wrong run_n in set_frames_done', 'red'))
             return
         if frames > self.get_frames_in_run(run_n):
-            print('Wrong frame_n in set_frames_done')
+            print(make_color('Wrong frame_n in set_frames_done', 'red'))
             return
         bias = run_sec_bias + run_size * (run_n - 1) + 74
         self._int32_to_bytes(bias, frames)
@@ -72,7 +72,7 @@ class RunFile:
         value = value % (256 * 256 * 256)
         self._fileContent[bias + 2] = value // (256 * 256)
         value = value % (256 * 256)
-        self._fileContent[bias + 1] = value // (256)
+        self._fileContent[bias + 1] = value // 256
         value = value % 256
         self._fileContent[bias + 0] = value
 
@@ -112,5 +112,3 @@ class RunFile:
         with open(self._filename, mode='wb') as file:  # b is important -> binary
             file.write(self._fileContent)
             print(make_color('File updated!', 'green'))
-
-

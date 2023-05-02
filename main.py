@@ -26,7 +26,6 @@ def cmd_parser(cmd):
         set_list = []
         for r in findall('{:d}', cmd):
             set_list.append(r[0])
-        print(set_list)
         return 'set', set_list
     print(make_color('cmd ignored', 'red'))
 
