@@ -1,10 +1,8 @@
-from termcolor import colored
 from color_text import printc
 from color_text import make_color
 
 run_sec_bias = 530
 run_size = 88  # bytes
-
 
 
 def bytes_to_int32(file_content, bias):
@@ -31,6 +29,13 @@ class RunFile:
     _fileContent = []
     _run_number = 0
 
+    def __init__(self, in_filename):
+        self._filename = in_filename
+        # print(filename)
+        with open(self._filename, mode='rb') as file:  # b is important -> binary
+            self._fileContent = bytearray(file.read())
+        self._run_number = self._find_run_number()  # number of runs
+
     def _find_run_number(self):
         k = 0
         current_run_n = bytes_to_int16(self._fileContent, run_sec_bias + run_size * k + 86)
@@ -38,13 +43,6 @@ class RunFile:
             k = k + 1
             current_run_n = bytes_to_int16(self._fileContent, run_sec_bias + run_size * k + 86)
         return k + 1
-
-    def __init__(self, in_filename):
-        self._filename = in_filename
-        # print(filename)
-        with open(self._filename, mode='rb') as file:  # b is important -> binary
-            self._fileContent = bytearray(file.read())
-        self._run_number = self._find_run_number()  # number of runs
 
     def get_run_number(self):
         return self._run_number
@@ -93,8 +91,6 @@ class RunFile:
         s = ''
         width = 8
         for k in range(1, self.get_run_number() + 1):
-            # s = s + '({:03d})'.format(k) +\
-            #     '[{:03d}/{:03d}] '.format(self.get_frames_done(k), self.get_frames_in_run(k))
             new_part = '{:03d}|'.format(k) +\
                 '{:03d}/{:03d} '.format(self.get_frames_done(k), self.get_frames_in_run(k))
             if self.get_frames_done(k) > 0:
@@ -109,18 +105,6 @@ class RunFile:
     def save_file(self):
         with open(self._filename, mode='wb') as file:  # b is important -> binary
             file.write(self._fileContent)
-            print(make_color('File updated!', 'red'))
+            print(make_color('File updated!', 'green'))
 
 
-
-
-
-# for i in range(run_sec_bias, run_sec_bias + run_size * run_number):
-#     print((i - run_sec_bias) % run_size, fileContent[i])
-#
-# print('------')
-#
-# frames_done(fileContent, 5)
-#
-# print('------')
-# print(_find_run_number(fileContent))

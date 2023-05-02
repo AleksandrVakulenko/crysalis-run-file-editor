@@ -14,8 +14,6 @@ class bcolors:
     ENDC = '\033[0m'
 
 
-# print(bcolors.WARNING + "Warning: No active frommets remain. Continue?" + bcolors.ENDC)
-
 def make_color(string, color):
     if color == 'none':
         string = bcolors.ENDC + string + bcolors.ENDC
